@@ -1,33 +1,42 @@
-# Hangman 
-# Dashed List Letters
-# Insert at specifc position relative to 
-# ex: if count of i > 1, find multiple indexes of letter, replace, continue 
-# .pop() index at the same index and then insert
-
+# Subtract guess if user gets right 
 import random
-wordList = ['MISSISSIPPI']
-wordSplit = [i for i in random.choice(wordList)]
+from words import words
+
+wordList = words
+wordSplit = [i.capitalize() for i in random.choice(wordList)]
 wordDashes = []
-letterUsed = []
+usedLetters = set()
 guess = 0
 
-# Creates List of dashes 
 for i in wordSplit:
   wordDashes.append('-')
+print(''.join(wordDashes))
 
-while guess < len(wordSplit) + 1:
+while guess <= 6:
   wordIndexes = list(enumerate(wordSplit))
-  userInput = input('Please Enter Letter Guess: ')
-  guess += 1
-  # Enumerate pairs values with indexes 
-  # Replace contents of wordDashes with userGuess
-  if userInput in wordSplit:
+  userInput = input('\nPlease Enter Letter Guess:').capitalize()
+
+  if userInput in usedLetters:
+    print('Already Used')
+    guess -= 1
+    
+  if userInput in wordSplit:  
     for i in range(0, len(wordSplit)):
       if wordIndexes[i][1] == userInput:
         wordDashes.pop(i)
-        wordDashes.insert(i, userInput)
+        wordDashes.insert(i, userInput) 
+  else:
+    guess += 1
+    if len(userInput) == 1:
+      usedLetters.add(userInput)
+
   if ''.join(wordSplit) == ''.join(wordDashes):
-    print(f'You won! It took {guess} Tries. The word was {"".join(wordDashes)}')
+    print(f'You won! You lost {guess} lives! The word was {"".join(wordDashes)}\n')
     break
-  print(''.join(wordDashes))
+    
+  print(f'Not In Word: {", ".join(usedLetters)}')
+  print(f"\n{''.join(wordDashes)}")
+  print(f'Lives Remaining: {7 - abs(guess)}')
   
+if guess > 6:
+  print(f'The Word was {"".join(wordSplit)}!, Try Again.')  
