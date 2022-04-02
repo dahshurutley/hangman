@@ -14,10 +14,15 @@ print(''.join(wordDashes))
 
 while guess <= 6:
   wordIndexes = list(enumerate(wordSplit))
-  userInput = input('\nPlease Enter Letter Guess:').capitalize()
+  userInput = input('Please Enter Letter Guess: ').capitalize()
+  print('')
 
   if userInput in usedLetters:
     print('Already Used')
+    guess -= 1
+
+  if len(userInput) > 1:
+    print('Not a Letter')
     guess -= 1
     
   if userInput in wordSplit:  
@@ -31,12 +36,12 @@ while guess <= 6:
       usedLetters.add(userInput)
 
   if ''.join(wordSplit) == ''.join(wordDashes):
-    print(f'You won! You lost {guess} lives! The word was {"".join(wordDashes)}\n')
+    print(f'You won! You lost {guess} lives! The word was {"".join(wordDashes).lower().capitalize()}')
     break
     
   print(f'Not In Word: {", ".join(usedLetters)}')
-  print(f"\n{''.join(wordDashes)}")
-  print(f'Lives Remaining: {7 - abs(guess)}')
+  print(f"{''.join(wordDashes)}")
+  print(f'Lives Remaining: {7 - abs(guess)}\n')
   
 if guess > 6:
-  print(f'The Word was {"".join(wordSplit)}!, Try Again.')  
+  print(f'The Word was {"".join(wordSplit).lower().capitalize()}!, Try Again.')  
